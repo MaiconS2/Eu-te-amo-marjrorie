@@ -65,3 +65,19 @@ p {
   user-select: none;
   
 }
+
+@media (max-width: 600px) {
+  .paper {
+    padding: 10px 20px;
+    background-size: 300px;
+    transform: rotateZ(-2deg);
+  }
+
+  .paper.image p {
+    font-size: 1.7rem bold;
+  } 
+
+  img {
+    max-height: 200px;
+  }
+}
