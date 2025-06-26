@@ -14,6 +14,37 @@ class Paper {
   currentPaperY = 0;
   rotating = false;
   init(paper) {
+    paper.addEventListener('touchstart', (e) => {
+      this.holdingPaper = true;
+      const touch = e.touches[0];
+      this.mouseTouchX = touch.clientX;
+      this.mouseTouchY = touch.clientY;
+      this.prevMouseX = touch.clientX;
+      this.prevMouseY = touch.clientY;
+      paper.style.zIndex = highestZ++;
+      e.preventDefault();
+    }, { passive: false });
+
+    document.addEventListener('touchmove', (e) => {
+      if (this.holdingPaper) {
+        const touch = e.touches[0];
+        this.mouseX = touch.clientX;
+        this.mouseY = touch.clientY;
+        this.velX = this.mouseX - this.prevMouseX;
+        this.velY = this.mouseY - this.prevMouseY;
+        this.currentPaperX += this.velX;
+        this.currentPaperY += this.velY;
+        this.prevMouseX = this.mouseX;
+        this.prevMouseY = this.mouseY;
+        paper.style.transform = `translateX(${this.currentPaperX}px) translateY(${this.currentPaperY}px) rotateZ(${this.rotation}deg)`;
+        e.preventDefault();
+      }
+    }, { passive: false });
+
+    window.addEventListener('touchend', () => {
+      this.holdingPaper = false;
+    });
+
     document.addEventListener('mousemove', (e) => {
       if(!this.rotating) {
         this.mouseX = e.clientX;
